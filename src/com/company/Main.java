@@ -35,11 +35,8 @@ public class Main {
         System.out.println("How many edges do you have?");
         int edgeNum = s.nextInt();
         System.out.println("What are the edges and weights of your graph? Enter them according to this format, if there is an edge from a to b with a weight of 4 --> ab, 4 : Press ");
-        Boolean exit = false;
         String edgeList[] = new String[edgeNum];
-        System.out.println("edgenum : " + edgeNum);
         int i = 0;
-        String n;
         while (i < edgeNum) {
             System.out.println("Enter next edge");
             String e = s.next();
@@ -75,9 +72,8 @@ public class Main {
             String selectedWeight = "";
             for(String e : nodeWeights){
                 String min = Integer.toString(9999999);
-                System.out.println("ob :  " + e);
                 int weight = Integer.parseInt(e.split(",")[1]);
-                if(weight < Double.parseDouble(min))
+                if(weight < Double.parseDouble(min) && !setNodes.contains(e.split(",")[0]))
                     selectedWeight = Integer.toString(weight);
             }
             for(String e : nodeWeights)
@@ -92,28 +88,29 @@ public class Main {
                      String destNode = String.valueOf(e.charAt(1));
                      int destNodeWeight = 9999999;
                      for(String l : nodeWeights) {
-                         if(l.contains(destNode))
+                         if(l.contains(destNode)) {
                              destNodeWeight = Integer.parseInt(l.split(",")[1]);
+                         }
                      }
-
                      int edgeWeight = Integer.parseInt(e.split(",")[1]);
 
                      if(Integer.parseInt(selectedWeight) + edgeWeight < destNodeWeight) {
                          int count = 0;
                          for(String c : nodeWeights) {
-                             if(c.contains(destNode))
-                                 nodeWeights[count] = c.split(",")[0] +  "," + Integer.parseInt(selectedWeight + edgeWeight) ;
+                             if(c.contains(destNode)) {
+                                 String node = c.split(",")[0];
+                                 int newWeight = Integer.parseInt(selectedWeight)+edgeWeight;
+                                 nodeWeights[count] = node +  "," + newWeight ;
+
+                             }
                              count++;
                          }
-
                      }
 
                  }
              }
-             if(setNodes.size() == nodeWeights.length) {
-                 System.out.println("break");
+             if(setNodes.size() == nodeWeights.length)
                  break;
-             }
 
         }
         for(String e : nodeWeights)
